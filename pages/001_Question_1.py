@@ -7,8 +7,10 @@ set_page()
 placeholder = st.empty()
 with placeholder.container():
     language = st.session_state['language']
-    if "load_state_1" not in st.session_state:
+    if "load_state_1" and "Q1" and "Q1_ans" not in st.session_state:
         st.session_state["load_state_1"] = False
+        st.session_state["Q1"] = []
+        st.session_state["Q1_ans"] = []
     scoring = st.session_state['scores']
     top1, top2, top3 = st.columns([5,9,5])
     with top1:
@@ -23,9 +25,9 @@ with placeholder.container():
             st.subheader(ask)
             answer_select = st.radio("", select)
             if language == 'english':
-                submit_answer = st.form_submit_button("Submit")
+                submit_answer = st.form_submit_button("👉Submit")
             elif language == 'chinese':
-                submit_answer = st.form_submit_button("提交")
+                submit_answer = st.form_submit_button("👉提交")
     if submit_answer or st.session_state.load_state_1:
         st.session_state.load_state_1 = True
         placeholder1.empty()
@@ -48,19 +50,19 @@ with placeholder.container():
             elif language == 'chinese':
                 st.error("抱歉！您答错了")
                 st.error(f"分数: {scoring}")
-                st.error(f"请向数字大使寻求帮助: 骗局问题 {question_no[0] + 1}")
+                st.error(f"请向数码大使寻求帮助: 骗局问题 {question_no[0] + 1}")
             st.session_state['correctness'] = False
             correctness = "Wrong"
         question_number = question_no[0]+1
-
         st.write(reason)
         st.session_state['scores'] = scoring
         if language == 'english':
-            submit_qns = st.button("Next Question")
+            submit_qns = st.button("👉Next Question")
         elif language == 'chinese':
-            submit_qns = st.button("下一个问提")
+            submit_qns = st.button("👉下一个问提")
         if submit_qns:
-            st.session_state.df.append({"Question_type": "scam", "Question_number": question_number, "Correctness": correctness})
+            st.session_state.Q1 = "scam" + " " + str(question_number)
+            st.session_state.Q1_ans = correctness
             placeholder.empty()
             del st.session_state["load_state_1"]
             switch_page("question 2")

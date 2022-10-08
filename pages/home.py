@@ -3,12 +3,8 @@ from chinese_data import chinese_scam_question_data, chinese_general_question_da
 from uility import set_page
 from question_model import Question
 import streamlit as st
-from datetime import datetime
 from random import randint
 from streamlit_extras.switch_page_button import switch_page
-
-now = datetime.now()
-date_now = now.strftime("%d/%m/%Y")
 
 
 def main_page():
@@ -46,8 +42,8 @@ def main_page():
         elif language == 'chinese':
             st.title("有奖问答题 (马林百列)")
             st.image("https://raw.githubusercontent.com/SteveDataAnalyst/SDO/898829ba435d8b66ece06b1e4d2c815436d239bc/Banner1.JPG")
-            string_1 = '<p style="font-family:sans-serif; font-size: 35px;">我们将有10个问题要测试您对网络安全认识</p> '
-            string_2 = '<p style="font-family:sans-serif; font-size: 35px;">试试看看你是否对网络安全准备充实！</p> '
+            string_1 = '<p style="font-family:sans-serif; font-size: 35px;">我们将有10个问题要测试您对网络安全的认识</p> '
+            string_2 = '<p style="font-family:sans-serif; font-size: 35px;">试试看你对网络安全是否有充分的了解！</p> '
             st.markdown(string_1, unsafe_allow_html=True)
             st.markdown(string_2, unsafe_allow_html=True)
             st.write("")
@@ -60,22 +56,20 @@ def main_page():
                 with col1:
                     st.write("")
                 with col2:
-                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名称</p>'
-                    string_4 = '<p style="font-family:sans-serif; font-size: 30px;">然后按开始按钮</p> '
+                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名子</p>'
                     st.markdown(string_3, unsafe_allow_html=True)
-                    st.markdown(string_4, unsafe_allow_html=True)
                     senior_name = st.text_input("Display Name:")
-                    submitted = st.form_submit_button("Submit")
+                    submitted = st.form_submit_button("开始")
                 with col3:
                     st.write("")
 
     if (len(senior_name) != 0) and submitted:
-        if 'senior_name' and 'scores' and 'correctness' and 'df' not in st.session_state:
+        if 'senior_name' and 'scores' and 'correctness' and 'name' not in st.session_state:
             st.session_state['senior_name'] = senior_name
             st.session_state['scores'] = 0
             st.session_state['correctness'] = False
-            st.session_state['df'] = []
-        st.session_state.df.append({"Attempted_date": date_now, "Names": senior_name})
+            st.session_state['name'] = []
+        st.session_state.name = senior_name
         placeholder1.empty()
         switch_page("question 1")
 

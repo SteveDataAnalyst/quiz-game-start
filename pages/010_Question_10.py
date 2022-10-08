@@ -1,15 +1,26 @@
 import streamlit as st
+from datetime import datetime
 from uility import set_page
-from database import insert_db
+from database import insert_quiz_result
 from streamlit_extras.switch_page_button import switch_page
+import time
+
+
+tm = time.strftime('%a, %d %b %Y %H:%M:%S')
+now = datetime.now()
+date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+date = now.strftime("%d/%m/%Y")
+
 
 set_page()
 
 placeholder = st.empty()
 with placeholder.container():
     language = st.session_state['language']
-    if "load_state_10" not in st.session_state:
+    if "load_state_10" and "Q10" and "Q10_ans" not in st.session_state:
         st.session_state["load_state_10"] = False
+        st.session_state["Q10"] = []
+        st.session_state["Q10_ans"] = []
     scoring = st.session_state['scores']
     if st.session_state['correctness']:
         scoring -= 1
@@ -28,9 +39,9 @@ with placeholder.container():
             st.subheader(ask)
             answer_select = st.radio("", select)
             if language == 'english':
-                submit_answer = st.form_submit_button("Submit")
+                submit_answer = st.form_submit_button("👉Submit")
             elif language == 'chinese':
-                submit_answer = st.form_submit_button("提交")
+                submit_answer = st.form_submit_button("👉提交")
     if submit_answer or st.session_state.load_state_10:
         st.session_state.load_state_10 = True
         placeholder1.empty()
@@ -53,20 +64,29 @@ with placeholder.container():
             elif language == 'chinese':
                 st.error("抱歉！您答错了")
                 st.error(f"分数: {scoring}")
-                st.error(f"请向数字大使寻求帮助: 骗局问题 {question_no[2] + 1}")
+                st.error(f"请向数码大使寻求帮助: 普通问题 {question_no[2] + 1}")
             st.session_state['correctness'] = False
             correctness = "Wrong"
         question_number = question_no[2]+1
         st.write(reason)
         st.session_state['scores'] = scoring
         if language == 'english':
-            submit_qns = st.button("Finish")
+            submit_qns = st.button("👉Finish")
         elif language == 'chinese':
-            submit_qns = st.button("完成")
+            submit_qns = st.button("👉完成")
         if submit_qns:
-            st.session_state.df.append({"Question_type": "general", "Question_number": question_number, "Correctness": correctness})
+            st.session_state.Q10 = "general" + " " + str(question_number)
+            st.session_state.Q10_ans = correctness
             placeholder.empty()
             del st.session_state["load_state_10"]
-            insert_db(st.session_state.df)
+            senior_name = st.session_state.name
+            key = str(tm) + senior_name
+            insert_quiz_result(key, date, st.session_state.name, st.session_state.scores,
+                      st.session_state.Q1, st.session_state.Q1_ans, st.session_state.Q2, st.session_state.Q2_ans,
+                      st.session_state.Q3, st.session_state.Q3_ans, st.session_state.Q4, st.session_state.Q4_ans,
+                      st.session_state.Q5, st.session_state.Q5_ans, st.session_state.Q6, st.session_state.Q6_ans,
+                      st.session_state.Q7, st.session_state.Q7_ans, st.session_state.Q8, st.session_state.Q8_ans,
+                      st.session_state.Q9, st.session_state.Q9_ans, st.session_state.Q10, st.session_state.Q10_ans)
+
             switch_page("congratz")
 
