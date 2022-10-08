@@ -75,7 +75,8 @@ def main_page():
             st.session_state['scores'] = 0
             st.session_state['correctness'] = False
             st.session_state['df'] = []
-        st.session_state.df.append({"Attempted_date": date_now, "Names": senior_name})
+        st.session_state.df.append({"date": date_now})
+        st.session_state.df.append({"names": senior_name})
         placeholder1.empty()
         switch_page("question 1")
 
