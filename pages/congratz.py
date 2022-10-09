@@ -15,7 +15,7 @@ def congratz_page():
             st.header("💯恭喜您拿到满分！！")
     elif st.session_state['scores'] >= 1:
         if language == 'english':
-            st.header(f"You have scored {st.session_state['scores']}")
+            st.header(f"You have scored {st.session_state['scores']} points")
             st.header("Keep up the good work!!😊")
         elif language == 'chinese':
             st.header(f"恭喜!!😊 您的总分是{st.session_state['scores']}分")
@@ -40,7 +40,7 @@ def congratz_page():
         st.success("芽茏图书馆(Geylang East Library) - 热线: 89401782 - 中午1点到下午6点 ")
         st.success("麦波申联络所(Macpherson CC) - 热线: 89401662 - 早上10点到下午6点 ")
         st.success("甘榜景万岸联络所(Kembangan CC) - 热线: 91392414")
-
+    st.image("https://www.imda.gov.sg/-/media/Imda/Images/Content/For-Community/Digital-for-Life/DfL-logo.jpg")
 
 
 congratz_page()

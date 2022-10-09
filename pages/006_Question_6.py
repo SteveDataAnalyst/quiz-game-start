@@ -66,7 +66,7 @@ with placeholder.container():
             submit_qns = st.button("👉下一个问提")
         if submit_qns:
             st.session_state.Q6 = "scam" + " " + str(question_number)
-            st.session_state.Q6 = correctness
+            st.session_state.Q6_ans = correctness
             placeholder.empty()
             del st.session_state["load_state_6"]
             switch_page("question 7")
