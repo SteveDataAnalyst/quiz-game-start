@@ -1,6 +1,6 @@
 english_scam_question_data = [
     {"image": "https://sgscamcheck.com/wp-content/uploads/2022/04/Screen_Shot_2022-04-21_at_11.53.05_AM-removebg-preview.png",
-     "text": "You received an email about an inheritance of $5 million from a distant relative. But you need to pay an administrative fee of $500 to release the funds.",
+     "text": "You received an email about an inheritance of 5 million from a distant relative. But you need to pay an administrative fee of $500 to release the funds.",
      "question": "❓What should you do?",
      "selection": ["Pay the $500. Such admin charges are common", "Ignore and delete the email"],
      "answer": "Ignore and delete the email",
