@@ -1,10 +1,14 @@
-from data import english_scam_question_data, english_general_question_data
-from chinese_data import chinese_scam_question_data, chinese_general_question_data
+from data import english_scam_question_data
+from chinese_data import chinese_scam_question_data
 from uility import set_page
 from question_model import Question
 import streamlit as st
+from datetime import datetime
 from random import randint
 from streamlit_extras.switch_page_button import switch_page
+
+now = datetime.now()
+date_now = now.strftime("%d/%m/%Y")
 
 
 def main_page():
@@ -42,8 +46,8 @@ def main_page():
         elif language == 'chinese':
             st.title("有奖问答题 (马林百列)")
             st.image("https://raw.githubusercontent.com/SteveDataAnalyst/SDO/898829ba435d8b66ece06b1e4d2c815436d239bc/Banner1.JPG")
-            string_1 = '<p style="font-family:sans-serif; font-size: 35px;">我们将有10个问题要测试您对网络安全的认识</p> '
-            string_2 = '<p style="font-family:sans-serif; font-size: 35px;">试试看你对网络安全是否有充分的了解！</p> '
+            string_1 = '<p style="font-family:sans-serif; font-size: 35px;">我们将有10个问题要测试您对网络安全认识</p> '
+            string_2 = '<p style="font-family:sans-serif; font-size: 35px;">试试看看你是否对网络安全准备充实！</p> '
             st.markdown(string_1, unsafe_allow_html=True)
             st.markdown(string_2, unsafe_allow_html=True)
             st.write("")
@@ -56,20 +60,21 @@ def main_page():
                 with col1:
                     st.write("")
                 with col2:
-                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名子</p>'
+                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名字</p>'
                     st.markdown(string_3, unsafe_allow_html=True)
                     senior_name = st.text_input("Display Name:")
-                    submitted = st.form_submit_button("开始")
+                    submitted = st.form_submit_button("Submit")
                 with col3:
                     st.write("")
 
     if (len(senior_name) != 0) and submitted:
-        if 'senior_name' and 'scores' and 'correctness' and 'name' not in st.session_state:
+        if 'senior_name' and 'scores' and 'correctness' and 'df' not in st.session_state:
             st.session_state['senior_name'] = senior_name
             st.session_state['scores'] = 0
             st.session_state['correctness'] = False
-            st.session_state['name'] = []
-        st.session_state.name = senior_name
+            st.session_state['df'] = []
+        st.session_state.df.append({"date": date_now})
+        st.session_state.df.append({"names": senior_name})
         placeholder1.empty()
         switch_page("question 1")
 
@@ -108,24 +113,6 @@ def scam_question_initialize(language):
     return question_bank
 
 
-def general_question_initialize(language):
-    question_bank = []
-    if language == 'english':
-        questions = english_general_question_data
-    elif language == 'chinese':
-        questions = chinese_general_question_data
-    for question in questions:
-        question_image = question["image"]
-        question_text = question["text"]
-        questioning = question["question"]
-        question_selection = question["selection"]
-        question_answer = question["answer"]
-        question_why = question["why"]
-        new_question = Question(question_image, question_text, questioning, question_selection, question_answer, question_why)
-        question_bank.append(new_question)
-    return question_bank
-
-
 @st.cache
 class Operations:
 
@@ -146,22 +133,15 @@ if __name__ == "__main__":
     set_page()
     placeholder = st.empty()
     with placeholder.container():
-        scam_question_list = random_generated_numbers(len(english_scam_question_data), 7)
-        general_question_list = random_generated_numbers(len(english_general_question_data), 3)
-        if 'scam_question_list' and 'general_question_list' not in st.session_state:
+        scam_question_list = random_generated_numbers(len(english_scam_question_data), 10)
+        if 'scam_question_list' not in st.session_state:
             st.session_state['scam_question_list'] = scam_question_list
-            st.session_state['general_question_list'] = general_question_list
         language = st.session_state['language']
         scam_operation = Operations(scam_question_initialize(language))
-        general_operation = Operations(general_question_initialize(language))
-        if 'scam_operation' and 'general_operation' not in st.session_state:
+        if 'scam_operation' not in st.session_state:
             st.session_state['scam_operation'] = scam_operation
-            st.session_state['general_operation'] = general_operation
 
     main_page()
-
-
-
 
 
 

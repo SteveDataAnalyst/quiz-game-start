@@ -15,8 +15,10 @@ with placeholder.container():
     top1, top2, top3 = st.columns([5,9,5])
     with top1:
         st.subheader(f"Question: 9")
-    question_no = st.session_state['general_question_list']
-    image, text, ask, select, answer, reason = st.session_state['general_operation'].return_values(question_no[1])
+    question_no = st.session_state['scam_question_list']
+    with top3:
+        st.text(f"SCAM:{question_no[8]+1}")
+    image, text, ask, select, answer, reason = st.session_state['scam_operation'].return_values(question_no[8])
     st.image(image, width=400)
     st.markdown(text)
     placeholder1 = st.empty()
@@ -46,14 +48,14 @@ with placeholder.container():
             if language == 'english':
                 st.error("That's incorrect")
                 st.error(f"Score: {scoring}")
-                st.error(f"Please find the Digital Ambassador for assistance on Scam Question: {question_no[1]+1}")
+                st.error(f"Please find the Digital Ambassador for assistance on Scam Question: {question_no[8]+1}")
             elif language == 'chinese':
                 st.error("抱歉！您答错了")
                 st.error(f"分数: {scoring}")
-                st.error(f"请向数码大使寻求帮助: 普通问题 {question_no[1] + 1}")
+                st.error(f"请向数码大使寻求帮助: 骗局问题 {question_no[8] + 1}")
             st.session_state['correctness'] = False
             correctness = "Wrong"
-        question_number = question_no[1]+1
+        question_number = question_no[8]+1
 
         st.write(reason)
         st.session_state['scores'] = scoring
@@ -62,8 +64,8 @@ with placeholder.container():
         elif language == 'chinese':
             submit_qns = st.button("👉下一个问提")
         if submit_qns:
-            st.session_state.Q9 = "general" + " " + str(question_number)
-            st.session_state.Q9_ans = correctness
+            st.session_state.Qns.append(question_number)
+            st.session_state.Ans.append(correctness)
             placeholder.empty()
             del st.session_state["load_state_9"]
             switch_page("question 10")

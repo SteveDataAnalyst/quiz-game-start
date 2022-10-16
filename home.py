@@ -1,5 +1,5 @@
-from data import english_scam_question_data, english_general_question_data
-from chinese_data import chinese_scam_question_data, chinese_general_question_data
+from data import english_scam_question_data
+from chinese_data import chinese_scam_question_data
 from uility import set_page
 from question_model import Question
 import streamlit as st
@@ -60,10 +60,8 @@ def main_page():
                 with col1:
                     st.write("")
                 with col2:
-                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名称</p>'
-                    string_4 = '<p style="font-family:sans-serif; font-size: 30px;">然后按开始按钮</p> '
+                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名字</p>'
                     st.markdown(string_3, unsafe_allow_html=True)
-                    st.markdown(string_4, unsafe_allow_html=True)
                     senior_name = st.text_input("Display Name:")
                     submitted = st.form_submit_button("Submit")
                 with col3:
@@ -115,24 +113,6 @@ def scam_question_initialize(language):
     return question_bank
 
 
-def general_question_initialize(language):
-    question_bank = []
-    if language == 'english':
-        questions = english_general_question_data
-    elif language == 'chinese':
-        questions = chinese_general_question_data
-    for question in questions:
-        question_image = question["image"]
-        question_text = question["text"]
-        questioning = question["question"]
-        question_selection = question["selection"]
-        question_answer = question["answer"]
-        question_why = question["why"]
-        new_question = Question(question_image, question_text, questioning, question_selection, question_answer, question_why)
-        question_bank.append(new_question)
-    return question_bank
-
-
 @st.cache
 class Operations:
 
@@ -153,17 +133,13 @@ if __name__ == "__main__":
     set_page()
     placeholder = st.empty()
     with placeholder.container():
-        scam_question_list = random_generated_numbers(len(english_scam_question_data), 7)
-        general_question_list = random_generated_numbers(len(english_general_question_data), 3)
-        if 'scam_question_list' and 'general_question_list' not in st.session_state:
+        scam_question_list = random_generated_numbers(len(english_scam_question_data), 10)
+        if 'scam_question_list' not in st.session_state:
             st.session_state['scam_question_list'] = scam_question_list
-            st.session_state['general_question_list'] = general_question_list
         language = st.session_state['language']
         scam_operation = Operations(scam_question_initialize(language))
-        general_operation = Operations(general_question_initialize(language))
-        if 'scam_operation' and 'general_operation' not in st.session_state:
+        if 'scam_operation' not in st.session_state:
             st.session_state['scam_operation'] = scam_operation
-            st.session_state['general_operation'] = general_operation
 
     main_page()
 

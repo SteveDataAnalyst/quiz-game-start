@@ -5,7 +5,7 @@ def set_page():
     st.set_page_config(initial_sidebar_state="collapsed",
                        layout="wide",
                        page_title="Marine Parade Team Quiz",
-                       page_icon="🏆🏆🏆")
+                       page_icon="🏆")
 
     st.markdown(""" <style>
     #MainMenu {visibility: hidden;}

@@ -18,6 +18,8 @@ with placeholder.container():
     with top1:
         st.subheader(f"Question: 4")
     question_no = st.session_state['scam_question_list']
+    with top3:
+        st.write(f"SCAM:{question_no[3]+1}")
     image, text, ask, select, answer, reason = st.session_state['scam_operation'].return_values(question_no[3])
 
 
@@ -65,8 +67,8 @@ with placeholder.container():
         elif language == 'chinese':
             submit_qns = st.button("👉下一个问提")
         if submit_qns:
-            st.session_state.Q4 = "scam" + " " + str(question_number)
-            st.session_state.Q4_ans = correctness
+            st.session_state.Qns.append(question_number)
+            st.session_state.Ans.append(correctness)
             placeholder.empty()
             del st.session_state["load_state_4"]
             switch_page("question 5")
