@@ -1,14 +1,10 @@
-from data import english_scam_question_data
+from english_data import english_scam_question_data
 from chinese_data import chinese_scam_question_data
 from uility import set_page
 from question_model import Question
 import streamlit as st
-from datetime import datetime
 from random import randint
 from streamlit_extras.switch_page_button import switch_page
-
-now = datetime.now()
-date_now = now.strftime("%d/%m/%Y")
 
 
 def main_page():
@@ -17,7 +13,8 @@ def main_page():
         language = st.session_state['language']
         if language == 'english':
             st.title("Quiz for Prize (Marine Parade)")
-            st.image("https://raw.githubusercontent.com/SteveDataAnalyst/SDO/898829ba435d8b66ece06b1e4d2c815436d239bc/Banner1.JPG")
+            st.image(
+                "https://raw.githubusercontent.com/SteveDataAnalyst/SDO/898829ba435d8b66ece06b1e4d2c815436d239bc/Banner1.JPG")
             string_1 = '<p style="font-family:sans-serif; font-size: 35px;">We have 10 questions to test ' \
                        'your awareness on cybersecurity and cyber hygiene practices.</p> '
             string_2 = '<p style="font-family:sans-serif; font-size: 35px;">Try our quiz to find out if you ' \
@@ -45,9 +42,10 @@ def main_page():
                     st.write("")
         elif language == 'chinese':
             st.title("有奖问答题 (马林百列)")
-            st.image("https://raw.githubusercontent.com/SteveDataAnalyst/SDO/898829ba435d8b66ece06b1e4d2c815436d239bc/Banner1.JPG")
-            string_1 = '<p style="font-family:sans-serif; font-size: 35px;">我们将有10个问题要测试您对网络安全认识</p> '
-            string_2 = '<p style="font-family:sans-serif; font-size: 35px;">试试看看你是否对网络安全准备充实！</p> '
+            st.image(
+                "https://raw.githubusercontent.com/SteveDataAnalyst/SDO/898829ba435d8b66ece06b1e4d2c815436d239bc/Banner1.JPG")
+            string_1 = '<p style="font-family:sans-serif; font-size: 35px;">我们将有10个问题要测试您对网络安全的认识</p> '
+            string_2 = '<p style="font-family:sans-serif; font-size: 35px;">试试看你对网络安全是否有充分的了解！</p> '
             st.markdown(string_1, unsafe_allow_html=True)
             st.markdown(string_2, unsafe_allow_html=True)
             st.write("")
@@ -60,31 +58,30 @@ def main_page():
                 with col1:
                     st.write("")
                 with col2:
-                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名字</p>'
+                    string_3 = '<p style="font-family:sans-serif; font-size: 30px;">请输入您的名子</p>'
                     st.markdown(string_3, unsafe_allow_html=True)
                     senior_name = st.text_input("Display Name:")
-                    submitted = st.form_submit_button("Submit")
+                    submitted = st.form_submit_button("开始")
                 with col3:
                     st.write("")
 
     if (len(senior_name) != 0) and submitted:
-        if 'senior_name' and 'scores' and 'correctness' and 'df' not in st.session_state:
+        if 'senior_name' and 'scores' and 'correctness' and 'name' not in st.session_state:
             st.session_state['senior_name'] = senior_name
             st.session_state['scores'] = 0
             st.session_state['correctness'] = False
-            st.session_state['df'] = []
-        st.session_state.df.append({"date": date_now})
-        st.session_state.df.append({"names": senior_name})
+            st.session_state['name'] = []
+        st.session_state.name = senior_name
         placeholder1.empty()
         switch_page("question 1")
 
 
-def random_generated_numbers(max_numbers,number_of_questions):
+def random_generated_numbers(max_numbers, number_of_questions):
     not_end_of_list = True
-    numbers = [randint(0, max_numbers-1)]
+    numbers = [randint(0, max_numbers - 1)]
     while not_end_of_list:
         can = True
-        number = randint(0, max_numbers-1)
+        number = randint(0, max_numbers - 1)
         for i in numbers:
             if i == number:
                 can = False
@@ -107,8 +104,7 @@ def scam_question_initialize(language):
         questioning = question["question"]
         question_selection = question["selection"]
         question_answer = question["answer"]
-        question_why = question["why"]
-        new_question = Question(question_image, question_text, questioning, question_selection, question_answer, question_why)
+        new_question = Question(question_image, question_text, questioning, question_selection, question_answer)
         question_bank.append(new_question)
     return question_bank
 
@@ -125,8 +121,7 @@ class Operations:
         ask = self.question_list[question_no].question
         select = self.question_list[question_no].selection
         answer = self.question_list[question_no].answer
-        reason = self.question_list[question_no].why
-        return image, text, ask, select, answer, reason
+        return image, text, ask, select, answer
 
 
 if __name__ == "__main__":
@@ -142,12 +137,3 @@ if __name__ == "__main__":
             st.session_state['scam_operation'] = scam_operation
 
     main_page()
-
-
-
-
-
-
-
-
-
